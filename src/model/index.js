@@ -20,6 +20,8 @@ db.Sequelize = Sequelize;
 
 db.sequelize = sequelizeInit;
 
+db.customer = require('./customer')(sequelizeInit, Sequelize);
+
 db.sequelize.sync({ force: false }).then(() => {
     console.log(`Database & tables created!`);
 })
