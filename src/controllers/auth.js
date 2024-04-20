@@ -15,9 +15,16 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
   try {
     const customer = await Auth.login(req.body);
-    res.status(201).json({ response });
+    res.status(201).json({ customer });
   } catch (error) {
-    // res.status(500).json({ message: error.message });
+    errorHandler(error, res);
+  }
+};
+exports.getAllUsers = async (req, res) => {
+  try {
+    const users = await Auth.getAllUsers();
+    res.status(200).json({ users });
+  } catch (error) {
     errorHandler(error, res);
   }
 };

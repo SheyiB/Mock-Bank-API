@@ -1,5 +1,6 @@
 const { customer } = require("../model");
 const { AppError } = require("../utils/error");
+const bcrypt = require("bcrypt");
 
 class AuthService {
   constructor() {
@@ -59,19 +60,31 @@ class AuthService {
   }
   async login(data) {
     try {
-      const { email, password } = body;
+      const { email } = data;
       let user = await this.model.findOne({
-        where: { email: data.email, password: data.password },
+        where: { email: data.email },
       });
       if (!user) {
         return "user not found";
       }
-      if (!email) {
-        return "email not found";
-      }
-      if (user.password !== password) {
+
+      const { password } = data;
+      let pass = await this.model.findOne({
+        where: { password: data.password },
+      });
+
+      if (!pass) {
         return "invalid password";
       }
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAllUsers() {
+    try {
+      const users = await this.model.findAll();
+      return users;
     } catch (error) {
       throw error;
     }
